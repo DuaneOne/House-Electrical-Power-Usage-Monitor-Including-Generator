@@ -168,9 +168,9 @@ Raspberry Pi, sudo reboot
 
 10.  Install python3
 
-	$ sudo apt-get install python3-pip
+$ sudo apt-get install python3-pip
 
-	Note after this if you see instructions which use pip, you will need to
+Note after this if you see instructions which use pip, you will need to
 substitute pip3 instead. Or you can assign an alias.
 
 <br><br>
@@ -186,7 +186,7 @@ $ sudo apt upgrade -y
 <br><br>
 **Step 2: Install Influxdb**
 
-First we add Influx repositories to apt:
+  First we add Influx repositories to apt:
 
 $ wget -qO- https://repos.influxdata.com/influxdb.key \| sudo apt-key
 add -
@@ -196,14 +196,16 @@ $ source /etc/os-release
 $ echo "deb https://repos.influxdata.com/debian $(lsb\_release -cs)
 stable" \| sudo tee /etc/apt/sources.list.d/influxdb.list
 
-Update apt with the new repos, & install.
+<br><br>
+  Update apt with the new repos, & install.
 
 $ sudo apt update && sudo apt install -y influxdb
 
 $ influxd version shows version 1.8.3 for my system (v2.x requires 64bit
 OS)
 
-Then start the influxdb service and set it to run at boot:
+<br><br>
+  Then start the influxdb service and set it to run at boot:
 
 $ sudo systemctl unmask influxdb.service
 
@@ -211,7 +213,8 @@ $ sudo systemctl start influxdb
 
 $ sudo systemctl enable influxdb.service
 
-You can confirm this works by issuing a sudo reboot
+<br><br>
+  You can confirm this works by issuing a sudo reboot
 
 We should now be able to run the influx client with influx at the $
 prompt and create a user for later (for my system I use a single admin
@@ -224,7 +227,7 @@ $ influx
 &gt; use housePower
 
 &gt; create user grafana1 with password 'your\_password' with all
-privileges \#Note, I made my Pi, InfluxDB, and Grafana passwords all the
+privileges  &nbsp; \#Note, I made my Pi, InfluxDB, and Grafana passwords all the
 same to make it easier for me.
 
 &gt; grant all privileges on housePower to grafana1
@@ -244,19 +247,20 @@ That’s it! You can now exit the Influx client by typing exit.
 <br><br>
 **Step 3: Install Grafana**
 
-Again we need to add the Grafana packages to apt:
+ Again we need to add the Grafana packages to apt:
 
-$ wget -q -O - https://packages.grafana.com/gpg.key \| sudo apt-key add
--
+$ wget -q -O - https://packages.grafana.com/gpg.key \| sudo apt-key add -
 
 $ echo "deb https://packages.grafana.com/oss/deb stable main" \| sudo
 tee /etc/apt/sources.list.d/grafana.list
 
-We can now update and install the binaries:
+<br><br>
+ We can now update and install the binaries:
 
 $ sudo apt update && sudo apt install -y grafana
 
-Then simply enable the service and set to run at boot:
+<br><br>
+ Then simply enable the service and set to run at boot:
 
 $ sudo systemctl unmask grafana-server.service
 
@@ -264,7 +268,8 @@ $ sudo systemctl start grafana-server
 
 $ sudo systemctl enable grafana-server.service
 
-You can confirm this works by issuing a sudo reboot.
+<br><br>
+ You can confirm this works by issuing a sudo reboot.
 
 we can check that grafana is up by loading it in a
 browser: http://&lt;Pi\_ipaddress&gt;:3000. Notice the default port for
@@ -276,7 +281,7 @@ default password = admin and set a new admin password **your\_password**
 
 Now we have both Influx and Grafana running, we can stitch them
 together. Log in to your Grafana instance with your browser
-(http://&lt;Pi\_ipaddress&gt;**:3000)** and head to “Data Sources”.
+(http://&lt;Pi\_ipaddress&gt;:3000) and head to “Data Sources”.
 Select “Add new Data Source” and find InfluxDB under “Timeseries
 Databases”.
 
@@ -311,9 +316,9 @@ supplied power, I call mainA and mainB, as well as my single phase
 backup generator, which I call gen. So on the RPi, install the
 following:
 
-$ sudo pip3 install minimalmodbus      \# used to read pzem modules
+$ sudo pip3 install minimalmodbus &nbsp; \# used to read pzem modules
 
-$ sudo apt install python3-gpiozero     \# used to get RPi cpu temperature
+$ sudo apt install python3-gpiozero &nbsp; \# used to get RPi cpu temperature
 
 Now a little hardware work to get the three pzems wired for testing. I
 set my testing up near my main computer to make it more convenient for
@@ -374,9 +379,9 @@ up a panel in Grafana to see the data. You can skip to the next section.
 However, your situation may be slightly different, so here are some tips
 and comments. Determine your RPi usb names.
 
-Use these commands at the     \# prompt on the RPi:
+Use these commands at the &nbsp; \# prompt on the RPi:
 
-ls /dev/ttyUSB\*         \# To list out the USB-serial ports that are active.
+ls /dev/ttyUSB\*  &nbsp; \# To list out the USB-serial ports that are active.
 
 Or for more information about the USB buses and connected devices, use
 
@@ -418,26 +423,29 @@ sudo chmod 644 /lib/systemd/system/pzem.service
 
 Which will make it readable by all, and only writable by the owner.
 
+<br><br>
 You want the service is started each time the Raspberry Pi boots. Do
 this with:
 
-sudo systemctl daemon-reload    \# updates the list of all services
+sudo systemctl daemon-reload  &nbsp; \# updates the list of all services
 
-sudo systemctl enable pzem.service    \#enable for next boot
+sudo systemctl enable pzem.service &nbsp; \#enable for next boot
 
 After which reboot your Raspberry Pi.
 
+<br><br>
 Here are some additional commands which can be used if you need them:
 
 sudo systemctl status pzem.service
 
 sudo systemctl stop pzem.service
 
-sudo systemctl start pzem.service      \# start for this boot
+sudo systemctl start pzem.service  &nbsp;  \# start for this boot
 
+<br><br>
 python print statements and errors output to /var/log/syslog
 
-as well as to /var/log/daemon.log    &lt;------- much easier to read in
+as well as to /var/log/daemon.log  &nbsp;  &lt;------- much easier to read in
 notepad++
 
 <br><br>
@@ -472,7 +480,7 @@ but since 2012 systemd has had built in support for watchdogs that
 doesn't require installing anything else and offers better compatibility
 with the shutdown/reboot process.
 
-sudo nano /etc/systemd/system.conf \# to edit, uncomment and set the
+sudo nano /etc/systemd/system.conf &nbsp; \# to edit, uncomment and set the
 following lines:
 
 RuntimeWatchdogSec=10
@@ -484,14 +492,14 @@ DefaultTimeoutStopSec=20
 What the lines above say is:
 
 -   refresh the hardware watchdog every 10 seconds. if for some reason
-    > the refresh fails (I believe after 3 intervals; i.e. 30s) power
-    > cycle the system
+    the refresh fails (I believe after 3 intervals; i.e. 30s) power
+    cycle the system
 
 -   on shutdown, if the system (not your scripts) takes more than 10
-    > minutes to reboot, power cycle the system
+    minutes to reboot, power cycle the system
 
 -   on shutdown if my scripts take more than 20 sec, then power cycle
-    > the system
+    the system
 
 I read where ShutdownWatchdogSec is no longer used, it was renamed to
 RebootWatchdogSec in July 2019. I verified my older version of the OS
@@ -588,7 +596,7 @@ partitions, and assign a name to it. For me the name is /dev/sda1
 
 To list the mounted devices: $ lsblk
 
-List the files: $ sudo ls /media/influx-backup     \# Note after the drive
+List the files: $ sudo ls /media/influx-backup &nbsp;  \# Note after the drive
 is unmounted, you cannot see the individual files using sudo ls or
 FileZilla
 
