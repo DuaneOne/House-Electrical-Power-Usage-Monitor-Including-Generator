@@ -1,0 +1,20 @@
+[Unit]
+Description=PZEM House Power Monitor Service
+After=network-online.target
+#InfluxDB is squirly.
+Requires=influxdb.service
+Wants=influxdb.service
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/python3 -u  /home/pi/mycode/pzem.py  
+#  uncomment next line to wait until the InfluxDB port 8086 is up and listening.
+ExecStartPre=/bin/sh -c 'while ! curl -sf http://localhost:8086/ping; do sleep 1; done'
+Restart=always
+RestartSec=2s
+StandardOutput=syslog  
+StandardError=syslog
+SyslogIdentifier=pzem
+
+[Install]
+WantedBy=multi-user.target
