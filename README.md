@@ -379,7 +379,7 @@ up a panel in Grafana to see the data. You can skip to the next section.
 However, your situation may be slightly different, so here are some tips
 and comments. Determine your RPi usb names.
 
-Use these commands at the &nbsp; \# prompt on the RPi:
+Use these commands at the &nbsp; \$ prompt on the RPi:
 
 ls /dev/ttyUSB\*  &nbsp; \# To list out the USB-serial ports that are active.
 
