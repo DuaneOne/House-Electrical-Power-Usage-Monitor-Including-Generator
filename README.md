@@ -374,7 +374,15 @@ and can communicate one at a time plugged into the RPi, it is time to
 plug all three in. The run the pzem.py script.
 
 If everything is exactly the same as mine, it may just work. You can set
-up a panel in Grafana to see the data. You can skip to the next section.
+up a panel in Grafana to see the data. There are many good tutorials on using Grafana, so I won't repeat the instructions here.  If everything is running, pzem.py will be populating the influxDB and Grafana will be able to see the measurements.  Based on the names from pzem.py, when you are setting up your first dashboard first panel, the query will be something like:
+
+FROM      default     ALL_SENSORS     WHERE
+
+SELECT    field(MAIN-A_AMPS)     mean()     + field
+
+          field(MAIN-B_AMPS)   mean()   
+
+This will overlay both measurements on same panel in different colors.  Clicking on the title of a panel allows you to edit the panel.
 
 However, your situation may be slightly different, so here are some tips
 and comments. Determine your RPi usb names.
